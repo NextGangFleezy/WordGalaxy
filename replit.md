@@ -113,9 +113,18 @@ Word Galaxy is a kid-friendly educational web application designed to help 5-yea
 
 ```
 Changelog:
-- July 02, 2025. Initial setup
+- July 02, 2025: Initial setup with basic 3-planet word game
+- July 02, 2025: Enhanced progressive difficulty system with 4 planets
+  - Planet Zoom: Basic sight words (Level 1)
+  - Planet Pop: Action and size words (Level 2) 
+  - Planet Zing: Sentence reading (Level 3)
+  - Planet Nova: Advanced sentence reading (Level 4)
+- Added sentence-based gameplay for higher levels
+- Implemented dual game modes: word selection and sentence reading
+- Enhanced UI with planet descriptions and proper progress tracking
 ```
 
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+Progressive difficulty goal: Teach children to eventually read full sentences through incremental learning stages.

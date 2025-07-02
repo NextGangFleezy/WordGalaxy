@@ -1,4 +1,4 @@
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 
 interface CompletionModalProps {
@@ -11,6 +11,7 @@ export default function CompletionModal({ isOpen, planetName, onContinue }: Comp
   return (
     <Dialog open={isOpen} onOpenChange={() => {}}>
       <DialogContent className="max-w-md mx-6 bg-gradient-to-br from-purple-600 to-blue-700 border-4 border-yellow-400 text-center">
+        <DialogTitle className="sr-only">Planet Completion Celebration</DialogTitle>
         <div className="p-8">
           <div className="text-6xl mb-6">🌟🎉🌟</div>
           <h3 className="text-3xl font-bold text-white mb-4">
