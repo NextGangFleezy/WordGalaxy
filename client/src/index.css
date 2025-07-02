@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(20, 14.3%, 4.1%);
+  --muted: hsl(60, 4.8%, 95.9%);
+  --muted-foreground: hsl(25, 5.3%, 44.7%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(20, 14.3%, 4.1%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(20, 14.3%, 4.1%);
+  --border: hsl(20, 5.9%, 90%);
+  --input: hsl(20, 5.9%, 90%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(60, 4.8%, 95.9%);
+  --secondary-foreground: hsl(24, 9.8%, 10%);
+  --accent: hsl(60, 4.8%, 95.9%);
+  --accent-foreground: hsl(24, 9.8%, 10%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(60, 9.1%, 97.8%);
+  --ring: hsl(20, 14.3%, 4.1%);
+  --radius: 0.5rem;
+  
+  /* Custom space theme colors */
+  --galaxy-dark: hsl(240, 100%, 5%);
+  --galaxy-deep: hsl(240, 90%, 15%);
+  --galaxy-mid: hsl(240, 60%, 25%);
+  --star-bright: hsl(60, 100%, 95%);
+  --star-dim: hsl(60, 50%, 80%);
+  --planet-zoom: hsl(20, 100%, 60%);
+  --planet-pop: hsl(300, 100%, 65%);
+  --planet-zing: hsl(120, 100%, 55%);
+  --word-star: hsl(45, 100%, 60%);
+  --success-glow: hsl(120, 100%, 50%);
+  --error-shake: hsl(0, 100%, 50%);
+}
+
+.dark {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(240, 4.9%, 83.9%);
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-family: 'Comic Neue', cursive;
+  }
+}
+
+@layer components {
+  .galaxy-bg {
+    background: radial-gradient(ellipse at center, var(--galaxy-deep) 0%, var(--galaxy-mid) 40%, var(--galaxy-dark) 100%);
+  }
+  
+  .planet-zoom {
+    background: linear-gradient(135deg, hsl(20, 100%, 60%) 0%, hsl(45, 100%, 60%) 100%);
+  }
+  
+  .planet-pop {
+    background: linear-gradient(135deg, hsl(300, 100%, 65%) 0%, hsl(270, 100%, 55%) 100%);
+  }
+  
+  .planet-zing {
+    background: linear-gradient(135deg, hsl(120, 100%, 55%) 0%, hsl(180, 100%, 50%) 100%);
+  }
+  
+  .word-star {
+    background: linear-gradient(135deg, hsl(45, 100%, 60%) 0%, hsl(30, 100%, 55%) 100%);
+    border: 3px solid var(--star-bright);
+    box-shadow: 0 8px 32px hsla(45, 100%, 60%, 0.3);
+  }
+  
+  .word-star:hover {
+    transform: scale(1.1);
+    box-shadow: 0 12px 40px hsla(45, 100%, 60%, 0.5);
+  }
+  
+  .star {
+    position: absolute;
+    background: var(--star-bright);
+    border-radius: 50%;
+    animation: twinkle 2s ease-in-out infinite;
+  }
+}
+
+@layer utilities {
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .animate-shake {
+    animation: shake 0.5s ease-in-out;
+  }
+  
+  .animate-glow {
+    animation: glow 0.8s ease-in-out;
+  }
+  
+  .animate-twinkle {
+    animation: twinkle 2s ease-in-out infinite;
+  }
+  
+  .animate-planet-hover {
+    animation: planet-hover 0.3s ease-in-out;
+  }
+  
+  .correct-answer {
+    animation: glow 0.8s ease-in-out;
+    background: linear-gradient(135deg, var(--success-glow) 0%, hsl(120, 100%, 40%) 100%) !important;
+  }
+  
+  .wrong-answer {
+    animation: shake 0.5s ease-in-out;
+    background: linear-gradient(135deg, var(--error-shake) 0%, hsl(0, 100%, 40%) 100%) !important;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 20px hsla(120, 100%, 50%, 0.3); }
+  50% { box-shadow: 0 0 40px hsla(120, 100%, 50%, 0.8); }
+  100% { box-shadow: 0 0 20px hsla(120, 100%, 50%, 0.3); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+@keyframes planet-hover {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.1); }
+}
