@@ -18,7 +18,7 @@ export default function Game() {
   
   const planet = getPlanetById(planetId || '');
   const { gameState, getCurrentContent, getOptions, getTotalItems, handleCorrectAnswer } = useGameState(planet);
-  const { speak } = useSpeech();
+  const { speak, speakSlow, speakRepeat, speakPhonetic } = useSpeech();
 
   const currentContent = getCurrentContent();
   const options = getOptions();
@@ -104,12 +104,26 @@ export default function Game() {
           }`}>
             {currentContent}
           </div>
-          <Button 
-            onClick={() => speak(currentContent)}
-            className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold text-lg px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
-          >
-            🔊 {planet.gameType === 'sentences' ? 'Hear Sentence' : 'Hear Word'}
-          </Button>
+          <div className="flex flex-wrap gap-3 justify-center mt-4">
+            <Button 
+              onClick={() => speak(currentContent)}
+              className="bg-blue-500 hover:bg-blue-600 text-white font-bold text-lg px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
+            >
+              🔊 {planet.gameType === 'sentences' ? 'Hear Sentence' : 'Hear Word'}
+            </Button>
+            <Button 
+              onClick={() => speakSlow(currentContent)}
+              className="bg-green-500 hover:bg-green-600 text-white font-bold text-lg px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
+            >
+              🐌 Slow
+            </Button>
+            <Button 
+              onClick={() => speakRepeat(currentContent)}
+              className="bg-purple-500 hover:bg-purple-600 text-white font-bold text-lg px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
+            >
+              🔁 Repeat
+            </Button>
+          </div>
         </div>
         
         {/* Content Options */}
