@@ -99,6 +99,11 @@ export default function Game() {
           <p className="text-2xl text-white mb-4">
             {planet.gameType === 'sentences' ? 'Read this sentence:' : 'Find this word:'}
           </p>
+          {planet.gameType === 'words' && (
+            <p className="text-sm text-blue-200 mb-4">
+              💡 Use the "Phonetic" button to hear how to sound out the word
+            </p>
+          )}
           <div className={`font-bold text-yellow-400 bg-black bg-opacity-50 px-8 py-4 rounded-3xl border-4 border-yellow-400 shadow-2xl ${
             planet.gameType === 'sentences' ? 'text-3xl md:text-4xl' : 'text-6xl md:text-8xl'
           }`}>
@@ -117,6 +122,14 @@ export default function Game() {
             >
               🐌 Slow
             </Button>
+            {planet.gameType === 'words' && (
+              <Button 
+                onClick={() => speakPhonetic(currentContent)}
+                className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
+              >
+                📝 Phonetic
+              </Button>
+            )}
             <Button 
               onClick={() => speakRepeat(currentContent)}
               className="bg-purple-500 hover:bg-purple-600 text-white font-bold text-lg px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"

@@ -122,6 +122,13 @@ Changelog:
 - Added sentence-based gameplay for higher levels
 - Implemented dual game modes: word selection and sentence reading
 - Enhanced UI with planet descriptions and proper progress tracking
+- July 02, 2025: Major speech synthesis improvements for pronunciation
+  - Added phonetic pronunciation dictionary for sight words
+  - Implemented child-friendly voice selection (prefers clear female voices)
+  - Added multiple speech modes: Normal, Slow, Phonetic, and Repeat
+  - Enhanced speech timing with natural pauses in sentences
+  - Slower pronunciation rates optimized for 5-year-old comprehension
+  - Added pronunciation tips and guidance for parents
 ```
 
 ## User Preferences
