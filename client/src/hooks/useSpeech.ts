@@ -55,6 +55,20 @@ export function useSpeech() {
           // Slower clear pronunciation for children
           speechSettings.rate = 0.6;
           speechSettings.pitch = 1.0;
+          // For single letters, use letter names
+          if (text.length === 1 && /^[A-Za-z]$/.test(text)) {
+            const letterNames: { [key: string]: string } = {
+              'A': 'ay', 'B': 'bee', 'C': 'see', 'D': 'dee', 'E': 'ee',
+              'F': 'eff', 'G': 'jee', 'H': 'aitch', 'I': 'eye', 'J': 'jay',
+              'K': 'kay', 'L': 'ell', 'M': 'emm', 'N': 'enn', 'O': 'oh',
+              'P': 'pee', 'Q': 'cue', 'R': 'arr', 'S': 'ess', 'T': 'tee',
+              'U': 'you', 'V': 'vee', 'W': 'double-you', 'X': 'ex', 
+              'Y': 'why', 'Z': 'zee'
+            };
+            const upperLetter = text.toUpperCase();
+            processedText = letterNames[upperLetter] || text;
+            speechSettings.rate = 0.5; // Even slower for letters
+          }
           break;
           
         case 'slow':

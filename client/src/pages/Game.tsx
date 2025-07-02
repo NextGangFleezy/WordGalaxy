@@ -97,13 +97,20 @@ export default function Game() {
         {/* Target Content Display */}
         <div className="text-center mb-12">
           <p className="text-2xl text-white mb-4">
-            {planet.gameType === 'sentences' ? 'Read this sentence:' : 'Find this word:'}
+            {planet.gameType === 'sentences' ? 'Read this sentence:' : 
+             planet.gameType === 'letters' ? 'Find this letter:' : 'Find this word:'}
           </p>
-          {planet.gameType === 'words' && (
+          {(planet.gameType === 'words' || planet.gameType === 'letters') && (
             <div className="text-sm text-blue-200 mb-4 space-y-1">
               <p>💡 Speech Options:</p>
-              <p><strong>Normal:</strong> Clear pronunciation • <strong>Syllables:</strong> Slow with breaks</p>
-              <p><strong>Spell Out:</strong> Letter by letter • <strong>Learn Mode:</strong> Normal then syllables</p>
+              {planet.gameType === 'letters' ? (
+                <p><strong>Hear Letter:</strong> Clear letter name pronunciation</p>
+              ) : (
+                <>
+                  <p><strong>Normal:</strong> Clear pronunciation • <strong>Syllables:</strong> Slow with breaks</p>
+                  <p><strong>Spell Out:</strong> Letter by letter • <strong>Learn Mode:</strong> Normal then syllables</p>
+                </>
+              )}
             </div>
           )}
           <div className={`font-bold text-yellow-400 bg-black bg-opacity-50 px-8 py-4 rounded-3xl border-4 border-yellow-400 shadow-2xl ${
@@ -116,28 +123,39 @@ export default function Game() {
               onClick={() => speak(currentContent)}
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold text-lg px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
             >
-              🔊 {planet.gameType === 'sentences' ? 'Hear Sentence' : 'Hear Word'}
-            </Button>
-            <Button 
-              onClick={() => speakSlow(currentContent)}
-              className="bg-green-500 hover:bg-green-600 text-white font-bold text-lg px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
-            >
-              🐌 Syllables
+              🔊 {planet.gameType === 'sentences' ? 'Hear Sentence' : 
+                   planet.gameType === 'letters' ? 'Hear Letter' : 'Hear Word'}
             </Button>
             {planet.gameType === 'words' && (
+              <>
+                <Button 
+                  onClick={() => speakSlow(currentContent)}
+                  className="bg-green-500 hover:bg-green-600 text-white font-bold text-lg px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
+                >
+                  🐌 Syllables
+                </Button>
+                <Button 
+                  onClick={() => speakSpell(currentContent)}
+                  className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold text-lg px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
+                >
+                  🔤 Spell Out
+                </Button>
+                <Button 
+                  onClick={() => speakRepeat(currentContent)}
+                  className="bg-purple-500 hover:bg-purple-600 text-white font-bold text-lg px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
+                >
+                  🎓 Learn Mode
+                </Button>
+              </>
+            )}
+            {planet.gameType === 'sentences' && (
               <Button 
-                onClick={() => speakSpell(currentContent)}
-                className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold text-lg px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
+                onClick={() => speakSlow(currentContent)}
+                className="bg-green-500 hover:bg-green-600 text-white font-bold text-lg px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
               >
-                🔤 Spell Out
+                🐌 Slow Reading
               </Button>
             )}
-            <Button 
-              onClick={() => speakRepeat(currentContent)}
-              className="bg-purple-500 hover:bg-purple-600 text-white font-bold text-lg px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
-            >
-              🎓 Learn Mode
-            </Button>
           </div>
         </div>
         
