@@ -18,7 +18,7 @@ export default function Game() {
   
   const planet = getPlanetById(planetId || '');
   const { gameState, getCurrentContent, getOptions, getTotalItems, handleCorrectAnswer } = useGameState(planet);
-  const { speak, speakSlow, speakRepeat, speakPhonetic } = useSpeech();
+  const { speak, speakSlow, speakRepeat } = useSpeech();
 
   const currentContent = getCurrentContent();
   const options = getOptions();
@@ -102,8 +102,8 @@ export default function Game() {
           {planet.gameType === 'words' && (
             <div className="text-sm text-blue-200 mb-4 space-y-1">
               <p>💡 Speech Options:</p>
-              <p><strong>Normal:</strong> Clear pronunciation • <strong>Slow:</strong> Syllable breaks</p>
-              <p><strong>Phonetic:</strong> Letter sounds • <strong>Repeat:</strong> All 3 methods</p>
+              <p><strong>Normal:</strong> Clear pronunciation • <strong>Syllables:</strong> Slow with breaks</p>
+              <p><strong>Learn Mode:</strong> Normal then syllables</p>
             </div>
           )}
           <div className={`font-bold text-yellow-400 bg-black bg-opacity-50 px-8 py-4 rounded-3xl border-4 border-yellow-400 shadow-2xl ${
@@ -124,14 +124,6 @@ export default function Game() {
             >
               🐌 Syllables
             </Button>
-            {planet.gameType === 'words' && (
-              <Button 
-                onClick={() => speakPhonetic(currentContent)}
-                className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
-              >
-                🔤 Letter Sounds
-              </Button>
-            )}
             <Button 
               onClick={() => speakRepeat(currentContent)}
               className="bg-purple-500 hover:bg-purple-600 text-white font-bold text-lg px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
