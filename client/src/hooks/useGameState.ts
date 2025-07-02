@@ -125,7 +125,12 @@ export function useGameState(planet?: Planet) {
     gameState,
     progress,
     getCurrentWord,
+    getCurrentSentence,
+    getCurrentContent,
+    getTotalItems,
     getWordOptions,
+    getSentenceOptions,
+    getOptions,
     handleCorrectAnswer,
     resetGame
   };

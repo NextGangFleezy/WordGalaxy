@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import StarField from '@/components/StarField';
 import WordStar from '@/components/WordStar';
+import SentenceStar from '@/components/SentenceStar';
 import CompletionModal from '@/components/CompletionModal';
 import { getPlanetById } from '@/lib/gameData';
 import { useGameState } from '@/hooks/useGameState';
@@ -16,19 +17,19 @@ export default function Game() {
   const [isProcessing, setIsProcessing] = useState(false);
   
   const planet = getPlanetById(planetId || '');
-  const { gameState, getCurrentWord, getWordOptions, handleCorrectAnswer } = useGameState(planet);
+  const { gameState, getCurrentContent, getOptions, getTotalItems, handleCorrectAnswer } = useGameState(planet);
   const { speak } = useSpeech();
 
-  const currentWord = getCurrentWord();
-  const wordOptions = getWordOptions();
+  const currentContent = getCurrentContent();
+  const options = getOptions();
 
-  // Auto-speak word when it changes
+  // Auto-speak content when it changes
   useEffect(() => {
-    if (currentWord && !gameState.isComplete) {
-      const timer = setTimeout(() => speak(currentWord), 500);
+    if (currentContent && !gameState.isComplete) {
+      const timer = setTimeout(() => speak(currentContent), 500);
       return () => clearTimeout(timer);
     }
-  }, [currentWord, gameState.isComplete, speak]);
+  }, [currentContent, gameState.isComplete, speak]);
 
   // Redirect if planet not found
   useEffect(() => {
@@ -37,11 +38,11 @@ export default function Game() {
     }
   }, [planetId, planet, setLocation]);
 
-  const handleWordSelect = (selectedWord: string) => {
+  const handleSelection = (selectedContent: string) => {
     if (isProcessing) return;
     
     setIsProcessing(true);
-    const isCorrect = selectedWord === currentWord;
+    const isCorrect = selectedContent === currentContent;
     
     if (isCorrect) {
       setFeedbackMessage('🌟 Great job! 🌟');
@@ -87,35 +88,50 @@ export default function Game() {
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
             {planet.displayName}
           </h2>
+          <p className="text-lg text-blue-300 mb-2">{planet.description}</p>
           <div className="text-2xl text-yellow-300 font-bold">
-            ⭐ {gameState.correctAnswers}/{gameState.shuffledWords.length} stars collected
+            ⭐ {gameState.correctAnswers}/{getTotalItems()} stars collected
           </div>
         </div>
         
-        {/* Target Word Display */}
+        {/* Target Content Display */}
         <div className="text-center mb-12">
-          <p className="text-2xl text-white mb-4">Find this word:</p>
-          <div className="text-6xl md:text-8xl font-bold text-yellow-400 bg-black bg-opacity-50 px-8 py-4 rounded-3xl border-4 border-yellow-400 shadow-2xl">
-            {currentWord}
+          <p className="text-2xl text-white mb-4">
+            {planet.gameType === 'sentences' ? 'Read this sentence:' : 'Find this word:'}
+          </p>
+          <div className={`font-bold text-yellow-400 bg-black bg-opacity-50 px-8 py-4 rounded-3xl border-4 border-yellow-400 shadow-2xl ${
+            planet.gameType === 'sentences' ? 'text-3xl md:text-4xl' : 'text-6xl md:text-8xl'
+          }`}>
+            {currentContent}
           </div>
           <Button 
-            onClick={() => speak(currentWord)}
+            onClick={() => speak(currentContent)}
             className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold text-lg px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
           >
-            🔊 Hear Word
+            🔊 {planet.gameType === 'sentences' ? 'Hear Sentence' : 'Hear Word'}
           </Button>
         </div>
         
-        {/* Word Stars */}
+        {/* Content Options */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          {wordOptions.map((word, index) => (
-            <WordStar
-              key={`${word}-${index}`}
-              word={word}
-              isCorrect={word === currentWord}
-              onSelect={handleWordSelect}
-              disabled={isProcessing}
-            />
+          {options.map((option, index) => (
+            planet.gameType === 'sentences' ? (
+              <SentenceStar
+                key={`${option}-${index}`}
+                sentence={option}
+                isCorrect={option === currentContent}
+                onSelect={handleSelection}
+                disabled={isProcessing}
+              />
+            ) : (
+              <WordStar
+                key={`${option}-${index}`}
+                word={option}
+                isCorrect={option === currentContent}
+                onSelect={handleSelection}
+                disabled={isProcessing}
+              />
+            )
           ))}
         </div>
         
