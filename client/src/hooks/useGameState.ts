@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Planet, shuffleArray, generateWrongAnswers } from '@/lib/gameData';
+import { Planet, shuffleArray, generateWrongAnswers, generateWrongLetters } from '@/lib/gameData';
 
 export interface GameState {
   currentWordIndex: number;
@@ -68,6 +68,11 @@ export function useGameState(planet?: Planet) {
   const getWordOptions = () => {
     const currentWord = getCurrentWord();
     if (!currentWord) return [];
+    
+    if (planet?.gameType === 'letters') {
+      const wrongLetters = generateWrongLetters(currentWord, planet.words);
+      return shuffleArray([currentWord, ...wrongLetters]);
+    }
     
     const wrongAnswers = generateWrongAnswers(currentWord, planet?.words);
     return shuffleArray([currentWord, ...wrongAnswers]);

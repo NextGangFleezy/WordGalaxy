@@ -128,3 +128,11 @@ export function generateWrongAnswers(correctWord: string, excludeWords: string[]
   );
   return shuffleArray(wrongWords).slice(0, 2);
 }
+
+export function generateWrongLetters(correctLetter: string, excludeLetters: string[] = []): string[] {
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  const wrongLetters = alphabet.filter(letter => 
+    letter !== correctLetter && !excludeLetters.includes(letter)
+  );
+  return shuffleArray(wrongLetters).slice(0, 2);
+}

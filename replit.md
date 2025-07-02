@@ -134,6 +134,14 @@ Changelog:
   - Slowed down normal speech rate from 0.8 to 0.6 for better comprehension
   - Added spell-out feature that pronounces each letter clearly (A... B... C...)
   - Optimized speech modes to: Normal (0.6 speed), Syllables (0.4 speed), Spell Out, Learn Mode
+- July 02, 2025: Major restructure to progressive learning system
+  - Added 3 new letter recognition planets as foundational levels
+  - Planet Alpha: Letters A-J (first letter recognition)
+  - Planet Beta: Letters K-T (continued alphabet learning)  
+  - Planet Gamma: Letters U-Z (complete alphabet mastery)
+  - Existing word and sentence planets moved to levels 4-7
+  - Added letter pronunciation using proper letter names (bee, see, dee, etc.)
+  - Created separate game logic for letters vs words vs sentences
 ```
 
 ## User Preferences
