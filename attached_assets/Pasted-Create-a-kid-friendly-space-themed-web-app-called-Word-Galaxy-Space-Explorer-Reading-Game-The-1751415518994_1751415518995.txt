@@ -1,0 +1,72 @@
+Create a kid-friendly space-themed web app called **Word Galaxy: Space Explorer Reading Game**.
+
+The goal is to help a 5-year-old child learn to read sight words through an interactive, colorful, and intuitive interface. Please build the MVP (Phase 1) with the following features:
+
+---
+
+## 🎯 Overall Design:
+- Bright, playful design with a galaxy/starfield background.
+- Use large buttons and accessible fonts (Comic Neue or bold sans-serif).
+- Include visual and audio feedback for correct/wrong answers.
+
+---
+
+## 📁 File Structure:
+- index.html  
+- style.css  
+- script.js  
+- /assets/ folder for future images and sounds
+
+---
+
+## ✅ Page 1: Home Screen (index.html)
+- Title: “🌌 Word Galaxy”
+- Subtitle: “A Space Explorer Reading Game”
+- Large “Start Game” button
+- Galaxy-themed background (just use CSS gradients or placeholder stars)
+- On click, transition to the planet map
+
+---
+
+## ✅ Page 2: Planet Map
+- Show 3 clickable planets:
+  - Planet Zoom (Level 1: the, and, is, me)
+  - Planet Pop (Level 2: run, play, big, little)
+  - Planet Zing (Level 3: jump, red, you, see)
+- Planets are large colored circles or placeholder planet images
+- Clicking a planet starts a mini-game
+
+---
+
+## ✅ Page 3: Sight Word Game (Level 1)
+- Show one target word from the level's word list
+- Display 3 floating “word stars” (buttons), one of which is correct
+- Words shuffle each round
+- On correct answer:
+  - Star glows, say “Great job!” in large text
+  - Move to next word after a short delay
+- On wrong answer:
+  - Star shakes or turns red, say “Try again!”
+
+---
+
+## ✅ Progress Tracker
+- Show a counter like “2/4 stars collected” at top
+- When all 4 words are answered correctly:
+  - Show animation or message: “🌟 You cleared Planet Zoom!”
+  - Button: “Back to Map”
+
+---
+
+## ✅ JavaScript (script.js)
+- Use arrays for each planet's word list
+- Randomly shuffle answer buttons each time
+- Use speech synthesis (`speechSynthesis.speak()`) to read the word when it appears
+- Keep game logic simple and visual
+
+---
+
+## 🧠 Optional Enhancements (commented for future use)
+- Add rocket ship animation between screens
+- Add audio feedback (correct/wrong sound)
+- Save progress in `localStorage` for each planet
