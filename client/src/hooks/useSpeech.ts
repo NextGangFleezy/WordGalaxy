@@ -77,12 +77,24 @@ export function useSpeech() {
           break;
           
         case 'spell':
-          // Spell out each letter clearly
-          speechSettings.rate = 0.5;
+          // Spell out each letter clearly with full letter names
+          speechSettings.rate = 0.4;
           speechSettings.pitch = 1.1;
           if (!text.includes(' ')) {
-            // Spell out individual letters with clear letter names
-            const letters = text.split('').map(letter => letter.toUpperCase()).join(' ... ');
+            // Convert each letter to its full phonetic name for clarity
+            const letterNames: { [key: string]: string } = {
+              'A': 'ay', 'B': 'bee', 'C': 'see', 'D': 'dee', 'E': 'ee',
+              'F': 'eff', 'G': 'jee', 'H': 'aitch', 'I': 'eye', 'J': 'jay',
+              'K': 'kay', 'L': 'ell', 'M': 'emm', 'N': 'enn', 'O': 'oh',
+              'P': 'pee', 'Q': 'cue', 'R': 'arr', 'S': 'ess', 'T': 'tee',
+              'U': 'you', 'V': 'vee', 'W': 'double-you', 'X': 'ex', 
+              'Y': 'why', 'Z': 'zee'
+            };
+            
+            const letters = text.split('').map(letter => {
+              const upperLetter = letter.toUpperCase();
+              return letterNames[upperLetter] || upperLetter;
+            }).join(' ... ');
             processedText = letters;
           }
           break;
