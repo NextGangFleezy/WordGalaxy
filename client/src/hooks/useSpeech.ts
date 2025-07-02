@@ -38,7 +38,7 @@ export function useSpeech() {
     };
   }, []);
 
-  const speak = useCallback((text: string, mode: 'normal' | 'slow' | 'repeat' = 'normal') => {
+  const speak = useCallback((text: string, mode: 'normal' | 'slow' | 'repeat' | 'spell' = 'normal') => {
     if ('speechSynthesis' in window) {
       // Cancel any ongoing speech
       speechSynthesis.cancel();
@@ -74,6 +74,17 @@ export function useSpeech() {
           // Normal pronunciation followed by slow repetition
           speechSettings.rate = 0.6;
           speechSettings.pitch = 1.0;
+          break;
+          
+        case 'spell':
+          // Spell out each letter clearly
+          speechSettings.rate = 0.5;
+          speechSettings.pitch = 1.1;
+          if (!text.includes(' ')) {
+            // Spell out individual letters with clear letter names
+            const letters = text.split('').map(letter => letter.toUpperCase()).join(' ... ');
+            processedText = letters;
+          }
           break;
       }
       
@@ -116,5 +127,9 @@ export function useSpeech() {
     speak(text, 'repeat');
   }, [speak]);
 
-  return { speak, speakSlow, speakRepeat, voices, preferredVoice };
+  const speakSpell = useCallback((text: string) => {
+    speak(text, 'spell');
+  }, [speak]);
+
+  return { speak, speakSlow, speakRepeat, speakSpell, voices, preferredVoice };
 }

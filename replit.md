@@ -129,6 +129,11 @@ Changelog:
   - Enhanced speech timing with natural pauses in sentences
   - Slower pronunciation rates optimized for 5-year-old comprehension
   - Added pronunciation tips and guidance for parents
+- July 02, 2025: Speech system refinement and spell-out feature
+  - Removed ineffective letter sound mode based on user feedback
+  - Slowed down normal speech rate from 0.8 to 0.6 for better comprehension
+  - Added spell-out feature that pronounces each letter clearly (A... B... C...)
+  - Optimized speech modes to: Normal (0.6 speed), Syllables (0.4 speed), Spell Out, Learn Mode
 ```
 
 ## User Preferences
