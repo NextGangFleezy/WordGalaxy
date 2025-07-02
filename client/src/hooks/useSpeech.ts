@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { getPhoneticPronunciation, addSentencePauses, syllableBreakdown } from '@/lib/pronunciation';
+import { getPhoneticPronunciation, addSentencePauses, syllableBreakdown, phoneticBreakdown } from '@/lib/pronunciation';
 
 export function useSpeech() {
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
@@ -38,24 +38,53 @@ export function useSpeech() {
     };
   }, []);
 
-  const speak = useCallback((text: string, options?: { slow?: boolean; repeat?: boolean; phonetic?: boolean }) => {
+  const speak = useCallback((text: string, mode: 'normal' | 'slow' | 'phonetic' | 'repeat' = 'normal') => {
     if ('speechSynthesis' in window) {
       // Cancel any ongoing speech
       speechSynthesis.cancel();
       
-      // Process text for better pronunciation
       let processedText = text;
-      
-      if (options?.phonetic) {
-        // Use phonetic pronunciation for individual words
-        if (!text.includes(' ')) {
-          processedText = getPhoneticPronunciation(text);
-        }
-      }
-      
-      // Add pauses for sentences to help comprehension
-      if (text.includes(' ') && text.length > 10) {
-        processedText = addSentencePauses(text);
+      let speechSettings = {
+        rate: 0.8,
+        pitch: 1.0,
+        volume: 0.95
+      };
+
+      switch (mode) {
+        case 'normal':
+          // Standard clear pronunciation
+          speechSettings.rate = 0.8;
+          speechSettings.pitch = 1.0;
+          break;
+          
+        case 'slow':
+          // Much slower with emphasis on each syllable
+          speechSettings.rate = 0.4;
+          speechSettings.pitch = 0.9;
+          if (!text.includes(' ')) {
+            // For single words, add syllable breaks
+            processedText = syllableBreakdown(text);
+          } else {
+            // For sentences, add significant pauses
+            processedText = text.replace(/\s+/g, ' ... ... ');
+          }
+          break;
+          
+        case 'phonetic':
+          // Phonetic pronunciation with letter-by-letter sounds
+          speechSettings.rate = 0.25;
+          speechSettings.pitch = 1.2;
+          if (!text.includes(' ')) {
+            // Use enhanced phonetic breakdown
+            processedText = phoneticBreakdown(text);
+          }
+          break;
+          
+        case 'repeat':
+          // Normal pronunciation followed by slow repetition
+          speechSettings.rate = 0.7;
+          speechSettings.pitch = 1.0;
+          break;
       }
       
       const utterance = new SpeechSynthesisUtterance(processedText);
@@ -65,44 +94,55 @@ export function useSpeech() {
         utterance.voice = preferredVoice;
       }
       
-      // Enhanced settings for child learning
-      utterance.rate = options?.slow ? 0.5 : 0.7; // Even slower for better comprehension
-      utterance.pitch = 1.0; // Natural pitch for clearer pronunciation
-      utterance.volume = 0.95; // Clear volume
-      
-      // Adjust rate for sentences vs words
-      if (text.includes(' ') && text.length > 10) {
-        utterance.rate = options?.slow ? 0.4 : 0.6; // Very slow for sentences
-      }
+      utterance.rate = speechSettings.rate;
+      utterance.pitch = speechSettings.pitch;
+      utterance.volume = speechSettings.volume;
       
       speechSynthesis.speak(utterance);
       
-      // Optional repeat for better learning
-      if (options?.repeat) {
+      // Special handling for repeat mode
+      if (mode === 'repeat') {
         utterance.onend = () => {
           setTimeout(() => {
-            const repeatUtterance = new SpeechSynthesisUtterance(processedText);
+            // Second pronunciation - much slower
+            const slowText = !text.includes(' ') ? syllableBreakdown(text) : text.replace(/\s+/g, ' ... ');
+            const repeatUtterance = new SpeechSynthesisUtterance(slowText);
             if (preferredVoice) repeatUtterance.voice = preferredVoice;
-            repeatUtterance.rate = utterance.rate;
-            repeatUtterance.pitch = utterance.pitch;
-            repeatUtterance.volume = utterance.volume;
+            repeatUtterance.rate = 0.4;
+            repeatUtterance.pitch = 0.95;
+            repeatUtterance.volume = 0.95;
             speechSynthesis.speak(repeatUtterance);
-          }, 1000); // Longer pause before repeat
+            
+            // Third pronunciation - phonetic breakdown if it's a single word
+            if (!text.includes(' ')) {
+              repeatUtterance.onend = () => {
+                setTimeout(() => {
+                  const phoneticText = phoneticBreakdown(text);
+                  const phoneticUtterance = new SpeechSynthesisUtterance(phoneticText);
+                  if (preferredVoice) phoneticUtterance.voice = preferredVoice;
+                  phoneticUtterance.rate = 0.25;
+                  phoneticUtterance.pitch = 1.2;
+                  phoneticUtterance.volume = 0.95;
+                  speechSynthesis.speak(phoneticUtterance);
+                }, 1000);
+              };
+            }
+          }, 1200);
         };
       }
     }
   }, [preferredVoice]);
 
   const speakSlow = useCallback((text: string) => {
-    speak(text, { slow: true, phonetic: true });
+    speak(text, 'slow');
   }, [speak]);
 
   const speakRepeat = useCallback((text: string) => {
-    speak(text, { repeat: true, phonetic: true });
+    speak(text, 'repeat');
   }, [speak]);
 
   const speakPhonetic = useCallback((text: string) => {
-    speak(text, { phonetic: true, slow: true });
+    speak(text, 'phonetic');
   }, [speak]);
 
   return { speak, speakSlow, speakRepeat, speakPhonetic, voices, preferredVoice };

@@ -50,14 +50,72 @@ export function addSentencePauses(sentence: string): string {
     .replace(/\s+/g, ' ... '); // Small pause between each word
 }
 
-// Function to break down longer words into syllables for pronunciation
+// Function to break down words into syllables for pronunciation
 export function syllableBreakdown(word: string): string {
   const syllableMap: Record<string, string> = {
     'little': 'lit ... tle',
-    'help': 'help',
+    'the': 'the',
+    'and': 'and', 
+    'run': 'run',
+    'play': 'play',
+    'big': 'big',
+    'can': 'can',
+    'go': 'go',
+    'up': 'up',
+    'down': 'down',
     'jump': 'jump',
-    'come': 'come'
+    'red': 'red',
+    'you': 'you',
+    'see': 'see',
+    'look': 'look',
+    'here': 'here',
+    'come': 'come',
+    'help': 'help',
+    'with': 'with',
+    'they': 'they',
+    'have': 'have',
+    'this': 'this',
+    'from': 'from',
+    'said': 'said',
+    'what': 'what',
+    'make': 'make'
   };
   
   return syllableMap[word.toLowerCase()] || word;
+}
+
+// Enhanced phonetic breakdown for letter-by-letter pronunciation
+export function phoneticBreakdown(word: string): string {
+  const phoneticLetters: Record<string, string> = {
+    'a': 'ay',
+    'b': 'buh',
+    'c': 'kuh', 
+    'd': 'duh',
+    'e': 'eh',
+    'f': 'fuh',
+    'g': 'guh',
+    'h': 'huh',
+    'i': 'ih',
+    'j': 'juh',
+    'k': 'kuh',
+    'l': 'luh',
+    'm': 'muh',
+    'n': 'nuh',
+    'o': 'oh',
+    'p': 'puh',
+    'q': 'kwuh',
+    'r': 'ruh',
+    's': 'sss',
+    't': 'tuh',
+    'u': 'uh',
+    'v': 'vuh',
+    'w': 'wuh',
+    'x': 'ksss',
+    'y': 'yuh',
+    'z': 'zzz'
+  };
+  
+  return word.toLowerCase().split('').map(letter => 
+    phoneticLetters[letter] || letter
+  ).join(' ... ');
 }
