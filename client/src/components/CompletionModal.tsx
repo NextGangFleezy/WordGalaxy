@@ -67,12 +67,12 @@ export default function CompletionModal({ isOpen, planetName, onContinue }: Comp
       const timer1 = setTimeout(() => {
         playRocketSound();
         setRocketLaunched(true);
-      }, 500);
+      }, 800);
 
-      // Show celebration after rocket launches
+      // Show celebration after rocket launches (longer delay for full flight)
       const timer2 = setTimeout(() => {
         setShowCelebration(true);
-      }, 1500);
+      }, 3200);
 
       return () => {
         clearTimeout(timer1);
@@ -83,7 +83,7 @@ export default function CompletionModal({ isOpen, planetName, onContinue }: Comp
 
   return (
     <Dialog open={isOpen} onOpenChange={() => {}}>
-      <DialogContent className="max-w-lg mx-6 bg-gradient-to-br from-purple-900 via-blue-800 to-black border-4 border-yellow-400 text-center overflow-hidden relative">
+      <DialogContent className="max-w-lg mx-6 bg-gradient-to-br from-purple-900 via-blue-800 to-black border-4 border-yellow-400 text-center relative" style={{overflow: 'visible'}}>
         <DialogTitle className="sr-only">Planet Completion Celebration</DialogTitle>
         
         {/* Animated Background Stars */}
@@ -102,40 +102,45 @@ export default function CompletionModal({ isOpen, planetName, onContinue }: Comp
           ))}
         </div>
 
-        {/* Rocket Animation */}
-        <div className="relative z-10 p-8">
-          <div className="relative mb-8 h-32">
-            <div 
-              className={`text-8xl absolute left-1/2 transform -translate-x-1/2 transition-all duration-1000 ${
-                rocketLaunched 
-                  ? '-translate-y-40 scale-75 opacity-0' 
-                  : 'translate-y-8'
-              }`}
-            >
-              🚀
-            </div>
-            
-            {/* Rocket Exhaust Animation */}
-            <div 
-              className={`absolute left-1/2 transform -translate-x-1/2 transition-all duration-1000 ${
-                rocketLaunched 
-                  ? '-translate-y-32 opacity-0' 
-                  : 'translate-y-16 opacity-100'
-              }`}
-            >
-              <div className="text-4xl animate-pulse">🔥</div>
-              <div className="text-2xl animate-bounce">💨</div>
-            </div>
-            
-            {/* Explosion Effect */}
-            {showCelebration && (
-              <div className="absolute left-1/2 top-0 transform -translate-x-1/2 -translate-y-8">
-                <div className="text-6xl animate-ping">✨</div>
-                <div className="text-4xl animate-bounce absolute top-2 left-2">🌟</div>
-                <div className="text-4xl animate-bounce absolute top-2 right-2" style={{animationDelay: '0.2s'}}>⭐</div>
-              </div>
-            )}
+        {/* Rocket Animation - Full Screen */}
+        <div className="absolute inset-0 z-20 pointer-events-none" style={{overflow: 'visible'}}>
+          <div 
+            className={`text-[12rem] absolute left-1/2 transform -translate-x-1/2 transition-all duration-[2500ms] ease-out ${
+              rocketLaunched 
+                ? '-translate-y-[150vh] scale-150 rotate-12' 
+                : 'translate-y-[60vh]'
+            }`}
+          >
+            🚀
           </div>
+          
+          {/* Rocket Exhaust Animation */}
+          <div 
+            className={`absolute left-1/2 transform -translate-x-1/2 transition-all duration-[2500ms] ease-out ${
+              rocketLaunched 
+                ? '-translate-y-[140vh] scale-150 opacity-0' 
+                : 'translate-y-[70vh] opacity-100'
+            }`}
+          >
+            <div className="text-6xl animate-pulse">🔥</div>
+            <div className="text-4xl animate-bounce">💨</div>
+            <div className="text-3xl animate-pulse" style={{animationDelay: '0.1s'}}>🌪️</div>
+          </div>
+          
+          {/* Explosion Effect at top */}
+          {showCelebration && (
+            <div className="absolute left-1/2 top-8 transform -translate-x-1/2">
+              <div className="text-8xl animate-ping">✨</div>
+              <div className="text-6xl animate-bounce absolute -top-4 -left-8">🌟</div>
+              <div className="text-6xl animate-bounce absolute -top-4 -right-8" style={{animationDelay: '0.2s'}}>⭐</div>
+              <div className="text-5xl animate-bounce absolute top-8 left-0" style={{animationDelay: '0.4s'}}>💫</div>
+            </div>
+          )}
+        </div>
+
+        {/* Main Content */}
+        <div className="relative z-10 p-8">
+          <div className="mb-8 h-32"></div>
 
           {/* Celebration Text */}
           <div className={`transition-all duration-500 ${showCelebration ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
