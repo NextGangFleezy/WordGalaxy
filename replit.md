@@ -169,6 +169,12 @@ Changelog:
   - Added enthusiastic voice confirmation when correct letter is selected
   - Voice says "Yes! [Letter]!" or "Correct! [Word]!" before advancing
   - Enhanced speech settings for confirmation phrases with higher pitch and faster rate
+- July 04, 2025: Ultra-dramatic rocket animation and perfect centering
+  - Slowed rocket animation by 95% to 50-second duration for cinematic effect
+  - Changed to linear easing for smooth, consistent rocket movement
+  - Perfectly centered all congratulatory text and UI elements
+  - Enhanced achievement badges with larger size and better spacing
+  - Extended celebration delay to 8 seconds to showcase slow rocket flight
 ```
 
 ## User Preferences

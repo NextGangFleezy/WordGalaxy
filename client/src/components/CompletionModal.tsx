@@ -69,10 +69,10 @@ export default function CompletionModal({ isOpen, planetName, onContinue }: Comp
         setRocketLaunched(true);
       }, 800);
 
-      // Show celebration after rocket launches (longer delay for full flight)
+      // Show celebration after rocket launches (much longer delay for dramatic slow flight)
       const timer2 = setTimeout(() => {
         setShowCelebration(true);
-      }, 3200);
+      }, 8000); // 8 seconds to let users enjoy the slow rocket flight
 
       return () => {
         clearTimeout(timer1);
@@ -105,22 +105,28 @@ export default function CompletionModal({ isOpen, planetName, onContinue }: Comp
         {/* Rocket Animation - Full Screen */}
         <div className="absolute inset-0 z-20 pointer-events-none" style={{overflow: 'visible'}}>
           <div 
-            className={`text-[12rem] absolute left-1/2 transform -translate-x-1/2 transition-all duration-[2500ms] ease-out ${
+            className={`text-[12rem] absolute left-1/2 transform -translate-x-1/2 transition-all ease-linear ${
               rocketLaunched 
                 ? '-translate-y-[150vh] scale-150 rotate-12' 
                 : 'translate-y-[60vh]'
             }`}
+            style={{
+              transitionDuration: rocketLaunched ? '50000ms' : '0ms' // 50 seconds for ultra-slow dramatic effect
+            }}
           >
             🚀
           </div>
           
           {/* Rocket Exhaust Animation */}
           <div 
-            className={`absolute left-1/2 transform -translate-x-1/2 transition-all duration-[2500ms] ease-out ${
+            className={`absolute left-1/2 transform -translate-x-1/2 transition-all ease-linear ${
               rocketLaunched 
                 ? '-translate-y-[140vh] scale-150 opacity-0' 
                 : 'translate-y-[70vh] opacity-100'
             }`}
+            style={{
+              transitionDuration: rocketLaunched ? '50000ms' : '0ms'
+            }}
           >
             <div className="text-6xl animate-pulse">🔥</div>
             <div className="text-4xl animate-bounce">💨</div>
@@ -142,29 +148,31 @@ export default function CompletionModal({ isOpen, planetName, onContinue }: Comp
         <div className="relative z-10 p-8">
           <div className="mb-8 h-32"></div>
 
-          {/* Celebration Text */}
-          <div className={`transition-all duration-500 ${showCelebration ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
+          {/* Celebration Text - Perfectly Centered */}
+          <div className={`transition-all duration-500 text-center flex flex-col items-center justify-center ${showCelebration ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
             <div className="text-6xl mb-6 animate-bounce">🌟🎉🌟</div>
-            <h3 className="text-4xl font-bold text-white mb-4 animate-pulse">
+            <h3 className="text-4xl font-bold text-white mb-4 animate-pulse text-center">
               🎊 You conquered {planetName}! 🎊
             </h3>
-            <p className="text-xl text-yellow-300 mb-8 animate-fade-in">
+            <p className="text-xl text-yellow-300 mb-8 animate-fade-in text-center max-w-md mx-auto">
               Outstanding work, Space Explorer! Your rocket has blasted off to the next adventure!
             </p>
             
-            {/* Floating Achievement Badges */}
-            <div className="flex justify-center space-x-4 mb-8">
-              <div className="text-3xl animate-bounce" style={{animationDelay: '0s'}}>🏆</div>
-              <div className="text-3xl animate-bounce" style={{animationDelay: '0.2s'}}>🎖️</div>
-              <div className="text-3xl animate-bounce" style={{animationDelay: '0.4s'}}>🥇</div>
+            {/* Floating Achievement Badges - Centered */}
+            <div className="flex justify-center items-center space-x-6 mb-8">
+              <div className="text-4xl animate-bounce" style={{animationDelay: '0s'}}>🏆</div>
+              <div className="text-4xl animate-bounce" style={{animationDelay: '0.2s'}}>🎖️</div>
+              <div className="text-4xl animate-bounce" style={{animationDelay: '0.4s'}}>🥇</div>
             </div>
             
-            <Button 
-              onClick={onContinue}
-              className="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 hover:from-yellow-500 hover:via-orange-600 hover:to-red-600 text-black font-bold text-xl px-10 py-4 rounded-full shadow-xl transform hover:scale-110 transition-all duration-300 animate-pulse"
-            >
-              🚀 Launch to Next Planet! 🚀
-            </Button>
+            <div className="flex justify-center">
+              <Button 
+                onClick={onContinue}
+                className="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 hover:from-yellow-500 hover:via-orange-600 hover:to-red-600 text-black font-bold text-xl px-10 py-4 rounded-full shadow-xl transform hover:scale-110 transition-all duration-300 animate-pulse"
+              >
+                🚀 Launch to Next Planet! 🚀
+              </Button>
+            </div>
           </div>
         </div>
 
