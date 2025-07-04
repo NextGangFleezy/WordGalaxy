@@ -11,63 +11,81 @@ export function useSpeech() {
       const availableVoices = speechSynthesis.getVoices();
       setVoices(availableVoices);
       
-      // Enhanced voice selection for natural, child-friendly voices
+      // Enhanced voice selection targeting urban American female voices
       const findBestVoice = () => {
-        // Priority 1: High-quality neural/premium voices
-        const neuralVoices = availableVoices.filter(voice => 
-          voice.lang.startsWith('en') && (
+        console.log('Available voices:', availableVoices.map(v => `${v.name} (${v.lang})`));
+        
+        // Priority 1: Specific urban American female voices
+        const urbanAmericanFemale = availableVoices.filter(voice => 
+          (voice.lang === 'en-US' || voice.lang.startsWith('en-US')) && (
+            voice.name.toLowerCase().includes('zira') ||
+            voice.name.toLowerCase().includes('cortana') ||
+            voice.name.toLowerCase().includes('aria') ||
+            voice.name.toLowerCase().includes('jenny') ||
+            voice.name.toLowerCase().includes('michelle') ||
+            voice.name.toLowerCase().includes('tracy') ||
+            voice.name.toLowerCase().includes('kimberly') ||
+            voice.name.toLowerCase().includes('ashley') ||
+            voice.name.toLowerCase().includes('amber') ||
+            voice.name.toLowerCase().includes('natasha') ||
+            voice.name.toLowerCase().includes('monica') ||
+            voice.name.toLowerCase().includes('elizabeth')
+          )
+        );
+        
+        // Priority 2: High-quality neural US female voices
+        const neuralUSFemale = availableVoices.filter(voice => 
+          (voice.lang === 'en-US' || voice.lang.startsWith('en-US')) && (
             voice.name.includes('Neural') ||
             voice.name.includes('Premium') ||
             voice.name.includes('Enhanced') ||
             voice.name.includes('HD') ||
-            voice.name.includes('Natural')
-          )
-        );
-        
-        // Priority 2: Specific high-quality voices known for clarity
-        const highQualityVoices = availableVoices.filter(voice => 
-          voice.lang.startsWith('en') && (
-            voice.name.toLowerCase().includes('samantha') ||
-            voice.name.toLowerCase().includes('allison') ||
-            voice.name.toLowerCase().includes('ava') ||
-            voice.name.toLowerCase().includes('serena') ||
-            voice.name.toLowerCase().includes('susan') ||
-            voice.name.toLowerCase().includes('victoria') ||
-            voice.name.toLowerCase().includes('emma') ||
-            voice.name.toLowerCase().includes('jenny') ||
-            voice.name.toLowerCase().includes('anna') ||
-            voice.name.toLowerCase().includes('daniel') ||
-            voice.name.toLowerCase().includes('alex') ||
-            voice.name.toLowerCase().includes('karen') ||
-            voice.name.toLowerCase().includes('zira')
-          )
-        );
-        
-        // Priority 3: Female voices (generally better for children)
-        const femaleVoices = availableVoices.filter(voice => 
-          voice.lang.startsWith('en') && (
+            voice.name.includes('Natural') ||
+            voice.name.includes('Wavenet')
+          ) && (
             voice.name.toLowerCase().includes('female') ||
-            voice.name.toLowerCase().includes('woman')
+            voice.name.toLowerCase().includes('woman') ||
+            !voice.name.toLowerCase().includes('male')
           )
         );
         
-        // Priority 4: Default English voices
-        const defaultEnglish = availableVoices.filter(voice => 
-          voice.lang.startsWith('en') && voice.default
+        // Priority 3: US English female voices with natural characteristics
+        const usEnglishFemale = availableVoices.filter(voice => 
+          (voice.lang === 'en-US' || voice.lang.startsWith('en-US')) && (
+            voice.name.toLowerCase().includes('female') ||
+            voice.name.toLowerCase().includes('woman') ||
+            (voice.name.toLowerCase().includes('samantha') && voice.lang.startsWith('en-US')) ||
+            (voice.name.toLowerCase().includes('allison') && voice.lang.startsWith('en-US')) ||
+            (voice.name.toLowerCase().includes('ava') && voice.lang.startsWith('en-US')) ||
+            (voice.name.toLowerCase().includes('susan') && voice.lang.startsWith('en-US'))
+          )
         );
         
-        // Priority 5: Any English voice
-        const englishVoices = availableVoices.filter(voice => 
-          voice.lang.startsWith('en')
+        // Priority 4: Any US English female-sounding voice
+        const anyUSFemale = availableVoices.filter(voice => 
+          (voice.lang === 'en-US' || voice.lang.startsWith('en-US')) &&
+          !voice.name.toLowerCase().includes('male') &&
+          !voice.name.toLowerCase().includes('man') &&
+          !voice.name.toLowerCase().includes('david') &&
+          !voice.name.toLowerCase().includes('mark') &&
+          !voice.name.toLowerCase().includes('alex')
         );
         
-        // Return the best available voice
-        return neuralVoices[0] || 
-               highQualityVoices[0] || 
-               femaleVoices[0] || 
-               defaultEnglish[0] || 
-               englishVoices[0] ||
-               availableVoices[0];
+        // Priority 5: Fallback to best available US voice
+        const usEnglish = availableVoices.filter(voice => 
+          voice.lang === 'en-US' || voice.lang.startsWith('en-US')
+        );
+        
+        const selected = urbanAmericanFemale[0] || 
+                        neuralUSFemale[0] || 
+                        usEnglishFemale[0] || 
+                        anyUSFemale[0] || 
+                        usEnglish[0] ||
+                        availableVoices.find(voice => voice.lang.startsWith('en')) ||
+                        availableVoices[0];
+        
+        console.log('Selected voice:', selected?.name, selected?.lang);
+        return selected;
       };
       
       setPreferredVoice(findBestVoice());
@@ -93,16 +111,17 @@ export function useSpeech() {
       
       let processedText = text;
       let speechSettings = {
-        rate: 0.7,
-        pitch: 1.0,
-        volume: 1.0
+        rate: 0.85,
+        pitch: 0.95,
+        volume: 0.9
       };
 
       switch (mode) {
         case 'normal':
-          // Slower clear pronunciation for children
-          speechSettings.rate = 0.6;
-          speechSettings.pitch = 1.0;
+          // Natural conversational speed with urban American intonation
+          speechSettings.rate = 0.9;
+          speechSettings.pitch = 0.95;
+          speechSettings.volume = 0.85;
           // For single letters, use letter names
           if (text.length === 1 && /^[A-Za-z]$/.test(text)) {
             const letterNames: { [key: string]: string } = {
@@ -115,33 +134,36 @@ export function useSpeech() {
             };
             const upperLetter = text.toUpperCase();
             processedText = letterNames[upperLetter] || text;
-            speechSettings.rate = 0.5; // Even slower for letters
+            speechSettings.rate = 0.75; // Slower but still natural for letters
           }
           break;
           
         case 'slow':
-          // Much slower with emphasis on each syllable
-          speechSettings.rate = 0.4;
-          speechSettings.pitch = 0.9;
+          // Deliberate but natural pace for learning
+          speechSettings.rate = 0.6;
+          speechSettings.pitch = 0.95;
+          speechSettings.volume = 0.85;
           if (!text.includes(' ')) {
             // For single words, add syllable breaks
             processedText = syllableBreakdown(text);
           } else {
-            // For sentences, add significant pauses
-            processedText = text.replace(/\s+/g, ' ... ... ');
+            // For sentences, add natural pauses
+            processedText = text.replace(/\s+/g, ' ... ');
           }
           break;
           
         case 'repeat':
-          // Normal pronunciation followed by slow repetition
-          speechSettings.rate = 0.6;
-          speechSettings.pitch = 1.0;
+          // Natural first pronunciation, then clearer repetition
+          speechSettings.rate = 0.85;
+          speechSettings.pitch = 0.95;
+          speechSettings.volume = 0.85;
           break;
           
         case 'spell':
-          // Spell out each letter clearly with full letter names
-          speechSettings.rate = 0.4;
-          speechSettings.pitch = 1.1;
+          // Spell out each letter with natural rhythm
+          speechSettings.rate = 0.7;
+          speechSettings.pitch = 0.95;
+          speechSettings.volume = 0.85;
           if (!text.includes(' ')) {
             // Convert each letter to its full phonetic name for clarity
             const letterNames: { [key: string]: string } = {
@@ -156,7 +178,7 @@ export function useSpeech() {
             const letters = text.split('').map(letter => {
               const upperLetter = letter.toUpperCase();
               return letterNames[upperLetter] || upperLetter;
-            }).join(' ... ');
+            }).join(', ');
             processedText = letters;
           }
           break;
@@ -205,16 +227,16 @@ export function useSpeech() {
       if (mode === 'repeat') {
         utterance.onend = () => {
           setTimeout(() => {
-            // Second pronunciation - much slower with syllables
+            // Second pronunciation - slower with clear articulation
             const slowText = !text.includes(' ') ? syllableBreakdown(text) : text.replace(/\s+/g, ' ... ');
             const repeatUtterance = new SpeechSynthesisUtterance(slowText);
             if (preferredVoice) repeatUtterance.voice = preferredVoice;
-            repeatUtterance.rate = 0.4;
+            repeatUtterance.rate = 0.6;
             repeatUtterance.pitch = 0.95;
-            repeatUtterance.volume = 1.0;
+            repeatUtterance.volume = 0.85;
             repeatUtterance.lang = 'en-US';
             speechSynthesis.speak(repeatUtterance);
-          }, 1000);
+          }, 800);
         };
       }
     }
