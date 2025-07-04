@@ -22,7 +22,7 @@ export default function Game() {
 
   const currentContent = getCurrentContent();
   const options = getOptions();
-
+  
   // Auto-speak content when it changes
   useEffect(() => {
     if (currentContent && !gameState.isComplete) {

@@ -149,6 +149,12 @@ Changelog:
   - Added error handling and voice-unavailable fallbacks
   - Optimized speech settings with natural timing and language specification
   - Added voice indicator showing which voice is currently being used
+- July 04, 2025: Advanced urban American female voice optimization
+  - Refined voice selection to prioritize urban American female voices (Samantha, Kathy, etc.)
+  - Enhanced speech naturalness with optimized rate (0.9), pitch (0.95), and volume settings
+  - Improved letter pronunciation clarity with "Letter A" format for better comprehension
+  - Fixed voice-to-display synchronization ensuring accurate letter matching
+  - Reduced robotic sound through natural timing and conversational speech patterns
 ```
 
 ## User Preferences

@@ -125,12 +125,12 @@ export function useSpeech() {
           // For single letters, use letter names
           if (text.length === 1 && /^[A-Za-z]$/.test(text)) {
             const letterNames: { [key: string]: string } = {
-              'A': 'ay', 'B': 'bee', 'C': 'see', 'D': 'dee', 'E': 'ee',
-              'F': 'eff', 'G': 'jee', 'H': 'aitch', 'I': 'eye', 'J': 'jay',
-              'K': 'kay', 'L': 'ell', 'M': 'emm', 'N': 'enn', 'O': 'oh',
-              'P': 'pee', 'Q': 'cue', 'R': 'arr', 'S': 'ess', 'T': 'tee',
-              'U': 'you', 'V': 'vee', 'W': 'double-you', 'X': 'ex', 
-              'Y': 'why', 'Z': 'zee'
+              'A': 'Letter A', 'B': 'Letter B', 'C': 'Letter C', 'D': 'Letter D', 'E': 'Letter E',
+              'F': 'Letter F', 'G': 'Letter G', 'H': 'Letter H', 'I': 'Letter I', 'J': 'Letter J',
+              'K': 'Letter K', 'L': 'Letter L', 'M': 'Letter M', 'N': 'Letter N', 'O': 'Letter O',
+              'P': 'Letter P', 'Q': 'Letter Q', 'R': 'Letter R', 'S': 'Letter S', 'T': 'Letter T',
+              'U': 'Letter U', 'V': 'Letter V', 'W': 'Letter W', 'X': 'Letter X', 
+              'Y': 'Letter Y', 'Z': 'Letter Z'
             };
             const upperLetter = text.toUpperCase();
             processedText = letterNames[upperLetter] || text;
