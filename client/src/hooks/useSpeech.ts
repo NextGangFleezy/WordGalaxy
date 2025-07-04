@@ -136,11 +136,11 @@ export function useSpeech() {
             const upperLetter = text.toUpperCase();
             processedText = letterNames[upperLetter] || text;
             speechSettings.rate = 0.75; // Slower but still natural for letters
-          } else if (text.includes('Yes!') || text.includes('Correct!')) {
-            // Confirmation phrases stay as-is with enthusiastic delivery
+          } else if (text.includes('That is correct')) {
+            // Confirmation phrases stay as-is with clear, encouraging delivery
             processedText = text;
-            speechSettings.rate = 0.8; // Slightly faster for excitement
-            speechSettings.pitch = 1.05; // Higher pitch for enthusiasm
+            speechSettings.rate = 0.75; // Slower for clear pronunciation
+            speechSettings.pitch = 1.0; // Normal pitch for clear teaching tone
           } else {
             // Regular words or sentences
             processedText = text;

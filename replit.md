@@ -175,6 +175,11 @@ Changelog:
   - Perfectly centered all congratulatory text and UI elements
   - Enhanced achievement badges with larger size and better spacing
   - Extended celebration delay to 8 seconds to showcase slow rocket flight
+- July 04, 2025: Enhanced voice confirmation with educational tone
+  - Changed confirmation phrase from "Yes! [Letter]" to "That is correct, [Letter]"
+  - Updated speech settings for confirmation phrases with clear teaching tone
+  - Maintained slower rate (0.75) and normal pitch (1.0) for educational clarity
+  - Provides more formal, instructional feedback for better learning reinforcement
 ```
 
 ## User Preferences

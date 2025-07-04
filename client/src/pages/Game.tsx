@@ -45,8 +45,8 @@ export default function Game() {
       // Immediately speak confirmation with the correct letter
       if (planet) {
         const confirmationText = planet.gameType === 'letters' 
-          ? `Yes! ${selectedContent}!` 
-          : `Correct! ${selectedContent}!`;
+          ? `That is correct, ${selectedContent}` 
+          : `That is correct, ${selectedContent}`;
         speak(confirmationText);
       }
       
