@@ -83,7 +83,7 @@ export default function CompletionModal({ isOpen, planetName, onContinue }: Comp
 
   return (
     <Dialog open={isOpen} onOpenChange={() => {}}>
-      <DialogContent className="max-w-lg mx-6 bg-gradient-to-br from-purple-900 via-blue-800 to-black border-4 border-yellow-400 text-center relative" style={{overflow: 'visible'}}>
+      <DialogContent className="max-w-4xl w-screen h-screen mx-0 bg-gradient-to-br from-purple-900 via-blue-800 to-black border-4 border-yellow-400 text-center relative" style={{overflow: 'visible'}}>
         <DialogTitle className="sr-only">Planet Completion Celebration</DialogTitle>
         
         {/* Animated Background Stars */}
@@ -144,10 +144,8 @@ export default function CompletionModal({ isOpen, planetName, onContinue }: Comp
           )}
         </div>
 
-        {/* Main Content */}
-        <div className="relative z-10 p-8">
-          <div className="mb-8 h-32"></div>
-
+        {/* Main Content - Fully Centered in Viewport */}
+        <div className="relative z-10 h-full flex items-center justify-center p-8">
           {/* Celebration Text - Perfectly Centered */}
           <div className={`transition-all duration-500 text-center flex flex-col items-center justify-center ${showCelebration ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
             <div className="text-6xl mb-6 animate-bounce">🌟🎉🌟</div>
