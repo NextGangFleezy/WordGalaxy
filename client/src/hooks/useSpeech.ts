@@ -15,9 +15,13 @@ export function useSpeech() {
       const findBestVoice = () => {
         console.log('Available voices:', availableVoices.map(v => `${v.name} (${v.lang})`));
         
-        // Priority 1: Specific urban American female voices
+        // Priority 1: Urban American female voices with natural accent
         const urbanAmericanFemale = availableVoices.filter(voice => 
           (voice.lang === 'en-US' || voice.lang.startsWith('en-US')) && (
+            voice.name.toLowerCase().includes('kathy') ||
+            voice.name.toLowerCase().includes('sandy') ||
+            voice.name.toLowerCase().includes('flo') ||
+            voice.name.toLowerCase().includes('shelley') ||
             voice.name.toLowerCase().includes('zira') ||
             voice.name.toLowerCase().includes('cortana') ||
             voice.name.toLowerCase().includes('aria') ||
@@ -76,7 +80,21 @@ export function useSpeech() {
           voice.lang === 'en-US' || voice.lang.startsWith('en-US')
         );
         
-        const selected = urbanAmericanFemale[0] || 
+        // Prioritize voices that tend to have more urban/contemporary sound
+        const kathyVoice = availableVoices.find(voice => 
+          voice.name.toLowerCase().includes('kathy') && voice.lang.startsWith('en-US'));
+        const floVoice = availableVoices.find(voice => 
+          voice.name.toLowerCase().includes('flo') && voice.lang.startsWith('en-US'));
+        const shelleyVoice = availableVoices.find(voice => 
+          voice.name.toLowerCase().includes('shelley') && voice.lang.startsWith('en-US'));
+        const sandyVoice = availableVoices.find(voice => 
+          voice.name.toLowerCase().includes('sandy') && voice.lang.startsWith('en-US'));
+        
+        const selected = kathyVoice ||
+                        floVoice ||
+                        shelleyVoice || 
+                        sandyVoice ||
+                        urbanAmericanFemale[0] || 
                         neuralUSFemale[0] || 
                         usEnglishFemale[0] || 
                         anyUSFemale[0] || 
@@ -119,10 +137,10 @@ export function useSpeech() {
 
       switch (mode) {
         case 'normal':
-          // Natural conversational speed with urban American intonation
-          speechSettings.rate = 0.9;
-          speechSettings.pitch = 0.95;
-          speechSettings.volume = 0.85;
+          // Urban American conversational style - slightly faster with natural rhythm
+          speechSettings.rate = 1.1;
+          speechSettings.pitch = 0.9;
+          speechSettings.volume = 0.9;
           // For single letters, use letter names
           if (text.length === 1 && /^[A-Za-z]$/.test(text)) {
             console.log('Processing letter:', text);
@@ -137,15 +155,15 @@ export function useSpeech() {
             const upperLetter = text.toUpperCase();
             processedText = letterNames[upperLetter] || text;
             console.log('Letter will be spoken as:', processedText);
-            speechSettings.rate = 0.75; // Slower but still natural for letters
+            speechSettings.rate = 0.95; // Natural pace for urban American speech
           }
           break;
           
         case 'slow':
-          // Deliberate but natural pace for learning
-          speechSettings.rate = 0.6;
-          speechSettings.pitch = 0.95;
-          speechSettings.volume = 0.85;
+          // Deliberate urban teaching pace
+          speechSettings.rate = 0.7;
+          speechSettings.pitch = 0.9;
+          speechSettings.volume = 0.9;
           if (!text.includes(' ')) {
             // For single words, add syllable breaks
             processedText = syllableBreakdown(text);
@@ -156,17 +174,17 @@ export function useSpeech() {
           break;
           
         case 'repeat':
-          // Natural first pronunciation, then clearer repetition
-          speechSettings.rate = 0.85;
-          speechSettings.pitch = 0.95;
-          speechSettings.volume = 0.85;
+          // Urban conversational pace for first pronunciation
+          speechSettings.rate = 1.0;
+          speechSettings.pitch = 0.9;
+          speechSettings.volume = 0.9;
           break;
           
         case 'spell':
-          // Spell out each letter with natural rhythm
-          speechSettings.rate = 0.7;
-          speechSettings.pitch = 0.95;
-          speechSettings.volume = 0.85;
+          // Spell out each letter with urban rhythm
+          speechSettings.rate = 0.8;
+          speechSettings.pitch = 0.9;
+          speechSettings.volume = 0.9;
           if (!text.includes(' ')) {
             // Convert each letter to its full phonetic name for clarity
             const letterNames: { [key: string]: string } = {
@@ -234,9 +252,9 @@ export function useSpeech() {
             const slowText = !text.includes(' ') ? syllableBreakdown(text) : text.replace(/\s+/g, ' ... ');
             const repeatUtterance = new SpeechSynthesisUtterance(slowText);
             if (preferredVoice) repeatUtterance.voice = preferredVoice;
-            repeatUtterance.rate = 0.6;
-            repeatUtterance.pitch = 0.95;
-            repeatUtterance.volume = 0.85;
+            repeatUtterance.rate = 0.75;
+            repeatUtterance.pitch = 0.9;
+            repeatUtterance.volume = 0.9;
             repeatUtterance.lang = 'en-US';
             speechSynthesis.speak(repeatUtterance);
           }, 800);
