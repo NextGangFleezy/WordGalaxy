@@ -162,6 +162,13 @@ Changelog:
   - Implemented Web Audio API sound effects for realistic rocket launch sounds
   - Created animated rocket with exhaust flames, particle effects, and star explosions
   - Enhanced celebration with floating achievement badges and dynamic visual effects
+- July 04, 2025: Enhanced rocket animation and added voice confirmation
+  - Increased rocket size to text-[12rem] for dramatic visual impact
+  - Rocket now travels full screen from bottom to top with rotation effects
+  - Extended animation duration to 2.5 seconds for complete visibility
+  - Added enthusiastic voice confirmation when correct letter is selected
+  - Voice says "Yes! [Letter]!" or "Correct! [Word]!" before advancing
+  - Enhanced speech settings for confirmation phrases with higher pitch and faster rate
 ```
 
 ## User Preferences

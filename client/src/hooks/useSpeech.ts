@@ -122,8 +122,9 @@ export function useSpeech() {
           speechSettings.rate = 0.9;
           speechSettings.pitch = 0.95;
           speechSettings.volume = 0.85;
-          // For single letters, use letter names
+          // Handle different types of text
           if (text.length === 1 && /^[A-Za-z]$/.test(text)) {
+            // Single letters get formal pronunciation
             const letterNames: { [key: string]: string } = {
               'A': 'Letter A', 'B': 'Letter B', 'C': 'Letter C', 'D': 'Letter D', 'E': 'Letter E',
               'F': 'Letter F', 'G': 'Letter G', 'H': 'Letter H', 'I': 'Letter I', 'J': 'Letter J',
@@ -135,6 +136,14 @@ export function useSpeech() {
             const upperLetter = text.toUpperCase();
             processedText = letterNames[upperLetter] || text;
             speechSettings.rate = 0.75; // Slower but still natural for letters
+          } else if (text.includes('Yes!') || text.includes('Correct!')) {
+            // Confirmation phrases stay as-is with enthusiastic delivery
+            processedText = text;
+            speechSettings.rate = 0.8; // Slightly faster for excitement
+            speechSettings.pitch = 1.05; // Higher pitch for enthusiasm
+          } else {
+            // Regular words or sentences
+            processedText = text;
           }
           break;
           
