@@ -5,33 +5,81 @@ export function useSpeech() {
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [preferredVoice, setPreferredVoice] = useState<SpeechSynthesisVoice | null>(null);
 
-  // Load and select the best voice for children
+  // Load and select the most natural-sounding voice
   useEffect(() => {
     const updateVoices = () => {
       const availableVoices = speechSynthesis.getVoices();
       setVoices(availableVoices);
       
-      // Find the best voice for children (prefer female, clear voices)
-      const childFriendlyVoice = availableVoices.find(voice => 
-        voice.lang.startsWith('en') && (
-          voice.name.toLowerCase().includes('female') ||
-          voice.name.toLowerCase().includes('woman') ||
-          voice.name.toLowerCase().includes('samantha') ||
-          voice.name.toLowerCase().includes('karen') ||
-          voice.name.toLowerCase().includes('zira')
-        )
-      ) || availableVoices.find(voice => 
-        voice.lang.startsWith('en') && voice.default
-      ) || availableVoices.find(voice => 
-        voice.lang.startsWith('en')
-      );
+      // Enhanced voice selection for natural, child-friendly voices
+      const findBestVoice = () => {
+        // Priority 1: High-quality neural/premium voices
+        const neuralVoices = availableVoices.filter(voice => 
+          voice.lang.startsWith('en') && (
+            voice.name.includes('Neural') ||
+            voice.name.includes('Premium') ||
+            voice.name.includes('Enhanced') ||
+            voice.name.includes('HD') ||
+            voice.name.includes('Natural')
+          )
+        );
+        
+        // Priority 2: Specific high-quality voices known for clarity
+        const highQualityVoices = availableVoices.filter(voice => 
+          voice.lang.startsWith('en') && (
+            voice.name.toLowerCase().includes('samantha') ||
+            voice.name.toLowerCase().includes('allison') ||
+            voice.name.toLowerCase().includes('ava') ||
+            voice.name.toLowerCase().includes('serena') ||
+            voice.name.toLowerCase().includes('susan') ||
+            voice.name.toLowerCase().includes('victoria') ||
+            voice.name.toLowerCase().includes('emma') ||
+            voice.name.toLowerCase().includes('jenny') ||
+            voice.name.toLowerCase().includes('anna') ||
+            voice.name.toLowerCase().includes('daniel') ||
+            voice.name.toLowerCase().includes('alex') ||
+            voice.name.toLowerCase().includes('karen') ||
+            voice.name.toLowerCase().includes('zira')
+          )
+        );
+        
+        // Priority 3: Female voices (generally better for children)
+        const femaleVoices = availableVoices.filter(voice => 
+          voice.lang.startsWith('en') && (
+            voice.name.toLowerCase().includes('female') ||
+            voice.name.toLowerCase().includes('woman')
+          )
+        );
+        
+        // Priority 4: Default English voices
+        const defaultEnglish = availableVoices.filter(voice => 
+          voice.lang.startsWith('en') && voice.default
+        );
+        
+        // Priority 5: Any English voice
+        const englishVoices = availableVoices.filter(voice => 
+          voice.lang.startsWith('en')
+        );
+        
+        // Return the best available voice
+        return neuralVoices[0] || 
+               highQualityVoices[0] || 
+               femaleVoices[0] || 
+               defaultEnglish[0] || 
+               englishVoices[0] ||
+               availableVoices[0];
+      };
       
-      setPreferredVoice(childFriendlyVoice || null);
+      setPreferredVoice(findBestVoice());
     };
 
-    // Update voices when they become available
+    // Initial load and handle delayed voice loading
     updateVoices();
     speechSynthesis.addEventListener('voiceschanged', updateVoices);
+    
+    // Some browsers need a delay for voices to load
+    setTimeout(updateVoices, 100);
+    setTimeout(updateVoices, 500);
     
     return () => {
       speechSynthesis.removeEventListener('voiceschanged', updateVoices);
@@ -45,9 +93,9 @@ export function useSpeech() {
       
       let processedText = text;
       let speechSettings = {
-        rate: 0.8,
+        rate: 0.7,
         pitch: 1.0,
-        volume: 0.95
+        volume: 1.0
       };
 
       switch (mode) {
@@ -116,16 +164,42 @@ export function useSpeech() {
       
       const utterance = new SpeechSynthesisUtterance(processedText);
       
-      // Use the preferred voice if available
+      // Enhanced voice configuration for better quality
       if (preferredVoice) {
         utterance.voice = preferredVoice;
       }
       
+      // Optimized settings for natural speech
       utterance.rate = speechSettings.rate;
       utterance.pitch = speechSettings.pitch;
       utterance.volume = speechSettings.volume;
       
-      speechSynthesis.speak(utterance);
+      // Add natural pauses and emphasis
+      utterance.lang = 'en-US';
+      
+      // Add event handlers for better speech quality
+      utterance.onstart = () => {
+        // Ensure speech synthesis has full focus
+        console.debug('Speech started with voice:', preferredVoice?.name || 'default');
+      };
+      
+      utterance.onerror = (event) => {
+        console.warn('Speech synthesis error:', event.error);
+        // Fallback: try again with default voice
+        if (preferredVoice && event.error === 'voice-unavailable') {
+          const fallbackUtterance = new SpeechSynthesisUtterance(processedText);
+          fallbackUtterance.rate = speechSettings.rate;
+          fallbackUtterance.pitch = speechSettings.pitch;
+          fallbackUtterance.volume = speechSettings.volume;
+          fallbackUtterance.lang = 'en-US';
+          speechSynthesis.speak(fallbackUtterance);
+        }
+      };
+      
+      // Small delay to ensure voice loading
+      setTimeout(() => {
+        speechSynthesis.speak(utterance);
+      }, 50);
       
       // Special handling for repeat mode
       if (mode === 'repeat') {
@@ -137,9 +211,10 @@ export function useSpeech() {
             if (preferredVoice) repeatUtterance.voice = preferredVoice;
             repeatUtterance.rate = 0.4;
             repeatUtterance.pitch = 0.95;
-            repeatUtterance.volume = 0.95;
+            repeatUtterance.volume = 1.0;
+            repeatUtterance.lang = 'en-US';
             speechSynthesis.speak(repeatUtterance);
-          }, 1200);
+          }, 1000);
         };
       }
     }

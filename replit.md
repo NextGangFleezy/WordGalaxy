@@ -142,6 +142,13 @@ Changelog:
   - Existing word and sentence planets moved to levels 4-7
   - Added letter pronunciation using proper letter names (bee, see, dee, etc.)
   - Created separate game logic for letters vs words vs sentences
+- July 02, 2025: Enhanced speech synthesis for natural-sounding voices
+  - Improved voice selection to prioritize neural/premium voices for better quality
+  - Added support for high-quality voices (Neural, Premium, Enhanced, HD, Natural)
+  - Enhanced voice fallback system with specific high-quality voice preferences
+  - Added error handling and voice-unavailable fallbacks
+  - Optimized speech settings with natural timing and language specification
+  - Added voice indicator showing which voice is currently being used
 ```
 
 ## User Preferences

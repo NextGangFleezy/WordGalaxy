@@ -18,7 +18,7 @@ export default function Game() {
   
   const planet = getPlanetById(planetId || '');
   const { gameState, getCurrentContent, getOptions, getTotalItems, handleCorrectAnswer } = useGameState(planet);
-  const { speak, speakSlow, speakRepeat, speakSpell } = useSpeech();
+  const { speak, speakSlow, speakRepeat, speakSpell, preferredVoice } = useSpeech();
 
   const currentContent = getCurrentContent();
   const options = getOptions();
@@ -110,6 +110,11 @@ export default function Game() {
                   <p><strong>Normal:</strong> Clear pronunciation • <strong>Syllables:</strong> Slow with breaks</p>
                   <p><strong>Spell Out:</strong> Letter by letter • <strong>Learn Mode:</strong> Normal then syllables</p>
                 </>
+              )}
+              {preferredVoice && (
+                <p className="text-xs text-blue-300">
+                  🎤 Using: {preferredVoice.name.replace(/Microsoft|Google|Apple/, '').trim()}
+                </p>
               )}
             </div>
           )}
