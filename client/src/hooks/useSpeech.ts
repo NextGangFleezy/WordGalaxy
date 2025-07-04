@@ -137,10 +137,10 @@ export function useSpeech() {
 
       switch (mode) {
         case 'normal':
-          // Urban American conversational style - slightly faster with natural rhythm
-          speechSettings.rate = 1.1;
-          speechSettings.pitch = 0.9;
-          speechSettings.volume = 0.9;
+          // Clear urban American style optimized for children
+          speechSettings.rate = 0.85;
+          speechSettings.pitch = 1.0;
+          speechSettings.volume = 1.0;
           // For single letters, use letter names
           if (text.length === 1 && /^[A-Za-z]$/.test(text)) {
             console.log('Processing letter:', text);
@@ -155,15 +155,15 @@ export function useSpeech() {
             const upperLetter = text.toUpperCase();
             processedText = letterNames[upperLetter] || text;
             console.log('Letter will be spoken as:', processedText);
-            speechSettings.rate = 0.95; // Natural pace for urban American speech
+            speechSettings.rate = 0.75; // Slower and clearer for letter recognition
           }
           break;
           
         case 'slow':
-          // Deliberate urban teaching pace
-          speechSettings.rate = 0.7;
-          speechSettings.pitch = 0.9;
-          speechSettings.volume = 0.9;
+          // Very clear and deliberate for learning
+          speechSettings.rate = 0.6;
+          speechSettings.pitch = 1.0;
+          speechSettings.volume = 1.0;
           if (!text.includes(' ')) {
             // For single words, add syllable breaks
             processedText = syllableBreakdown(text);
@@ -174,17 +174,17 @@ export function useSpeech() {
           break;
           
         case 'repeat':
-          // Urban conversational pace for first pronunciation
-          speechSettings.rate = 1.0;
-          speechSettings.pitch = 0.9;
-          speechSettings.volume = 0.9;
+          // Clear first pronunciation for repetition
+          speechSettings.rate = 0.85;
+          speechSettings.pitch = 1.0;
+          speechSettings.volume = 1.0;
           break;
           
         case 'spell':
-          // Spell out each letter with urban rhythm
-          speechSettings.rate = 0.8;
-          speechSettings.pitch = 0.9;
-          speechSettings.volume = 0.9;
+          // Clear letter-by-letter pronunciation
+          speechSettings.rate = 0.7;
+          speechSettings.pitch = 1.0;
+          speechSettings.volume = 1.0;
           if (!text.includes(' ')) {
             // Convert each letter to its full phonetic name for clarity
             const letterNames: { [key: string]: string } = {
@@ -252,9 +252,9 @@ export function useSpeech() {
             const slowText = !text.includes(' ') ? syllableBreakdown(text) : text.replace(/\s+/g, ' ... ');
             const repeatUtterance = new SpeechSynthesisUtterance(slowText);
             if (preferredVoice) repeatUtterance.voice = preferredVoice;
-            repeatUtterance.rate = 0.75;
-            repeatUtterance.pitch = 0.9;
-            repeatUtterance.volume = 0.9;
+            repeatUtterance.rate = 0.65;
+            repeatUtterance.pitch = 1.0;
+            repeatUtterance.volume = 1.0;
             repeatUtterance.lang = 'en-US';
             speechSynthesis.speak(repeatUtterance);
           }, 800);
