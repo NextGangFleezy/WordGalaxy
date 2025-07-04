@@ -23,13 +23,7 @@ export default function Game() {
   const currentContent = getCurrentContent();
   const options = getOptions();
   
-  // Auto-speak content when it changes
-  useEffect(() => {
-    if (currentContent && !gameState.isComplete) {
-      const timer = setTimeout(() => speak(currentContent), 500);
-      return () => clearTimeout(timer);
-    }
-  }, [currentContent, gameState.isComplete, speak]);
+  // Remove auto-speak - let user control when to hear letters
 
   // Redirect if planet not found
   useEffect(() => {

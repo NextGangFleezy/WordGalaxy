@@ -30,6 +30,7 @@ export function useGameState(planet?: Planet) {
   // Initialize game when planet changes
   useEffect(() => {
     if (planet) {
+      console.log('Initializing game for planet:', planet.id);
       const shuffledWords = shuffleArray([...planet.words]);
       const shuffledSentences = planet.sentences ? shuffleArray([...planet.sentences]) : [];
       setGameState({
@@ -92,6 +93,7 @@ export function useGameState(planet?: Planet) {
   };
 
   const handleCorrectAnswer = () => {
+    console.log('handleCorrectAnswer called - advancing from index:', gameState.currentWordIndex);
     const newCorrectAnswers = gameState.correctAnswers + 1;
     const newWordIndex = gameState.currentWordIndex + 1;
     const totalItems = getTotalItems();
