@@ -15,13 +15,9 @@ export function useSpeech() {
       const findBestVoice = () => {
         console.log('Available voices:', availableVoices.map(v => `${v.name} (${v.lang})`));
         
-        // Priority 1: Urban American female voices with natural accent
+        // Priority 1: Specific urban American female voices
         const urbanAmericanFemale = availableVoices.filter(voice => 
           (voice.lang === 'en-US' || voice.lang.startsWith('en-US')) && (
-            voice.name.toLowerCase().includes('kathy') ||
-            voice.name.toLowerCase().includes('sandy') ||
-            voice.name.toLowerCase().includes('flo') ||
-            voice.name.toLowerCase().includes('shelley') ||
             voice.name.toLowerCase().includes('zira') ||
             voice.name.toLowerCase().includes('cortana') ||
             voice.name.toLowerCase().includes('aria') ||
@@ -80,21 +76,7 @@ export function useSpeech() {
           voice.lang === 'en-US' || voice.lang.startsWith('en-US')
         );
         
-        // Prioritize voices that tend to have more urban/contemporary sound
-        const kathyVoice = availableVoices.find(voice => 
-          voice.name.toLowerCase().includes('kathy') && voice.lang.startsWith('en-US'));
-        const floVoice = availableVoices.find(voice => 
-          voice.name.toLowerCase().includes('flo') && voice.lang.startsWith('en-US'));
-        const shelleyVoice = availableVoices.find(voice => 
-          voice.name.toLowerCase().includes('shelley') && voice.lang.startsWith('en-US'));
-        const sandyVoice = availableVoices.find(voice => 
-          voice.name.toLowerCase().includes('sandy') && voice.lang.startsWith('en-US'));
-        
-        const selected = kathyVoice ||
-                        floVoice ||
-                        shelleyVoice || 
-                        sandyVoice ||
-                        urbanAmericanFemale[0] || 
+        const selected = urbanAmericanFemale[0] || 
                         neuralUSFemale[0] || 
                         usEnglishFemale[0] || 
                         anyUSFemale[0] || 
@@ -123,7 +105,6 @@ export function useSpeech() {
   }, []);
 
   const speak = useCallback((text: string, mode: 'normal' | 'slow' | 'repeat' | 'spell' = 'normal') => {
-    console.log('SPEECH DEBUG - Input text:', text, 'Mode:', mode);
     if ('speechSynthesis' in window) {
       // Cancel any ongoing speech
       speechSynthesis.cancel();
@@ -137,33 +118,31 @@ export function useSpeech() {
 
       switch (mode) {
         case 'normal':
-          // Clear urban American style optimized for children
-          speechSettings.rate = 0.85;
-          speechSettings.pitch = 1.0;
-          speechSettings.volume = 1.0;
+          // Natural conversational speed with urban American intonation
+          speechSettings.rate = 0.9;
+          speechSettings.pitch = 0.95;
+          speechSettings.volume = 0.85;
           // For single letters, use letter names
           if (text.length === 1 && /^[A-Za-z]$/.test(text)) {
-            console.log('Processing letter:', text);
             const letterNames: { [key: string]: string } = {
-              'A': 'Letter A', 'B': 'Letter B', 'C': 'Letter C', 'D': 'Letter D', 'E': 'Letter E',
-              'F': 'Letter F', 'G': 'Letter G', 'H': 'Letter H', 'I': 'Letter I', 'J': 'Letter J',
-              'K': 'Letter K', 'L': 'Letter L', 'M': 'Letter M', 'N': 'Letter N', 'O': 'Letter O',
-              'P': 'Letter P', 'Q': 'Letter Q', 'R': 'Letter R', 'S': 'Letter S', 'T': 'Letter T',
-              'U': 'Letter U', 'V': 'Letter V', 'W': 'Letter W', 'X': 'Letter X', 
-              'Y': 'Letter Y', 'Z': 'Letter Z'
+              'A': 'ay', 'B': 'bee', 'C': 'see', 'D': 'dee', 'E': 'ee',
+              'F': 'eff', 'G': 'jee', 'H': 'aitch', 'I': 'eye', 'J': 'jay',
+              'K': 'kay', 'L': 'ell', 'M': 'emm', 'N': 'enn', 'O': 'oh',
+              'P': 'pee', 'Q': 'cue', 'R': 'arr', 'S': 'ess', 'T': 'tee',
+              'U': 'you', 'V': 'vee', 'W': 'double-you', 'X': 'ex', 
+              'Y': 'why', 'Z': 'zee'
             };
             const upperLetter = text.toUpperCase();
             processedText = letterNames[upperLetter] || text;
-            console.log('Letter will be spoken as:', processedText);
-            speechSettings.rate = 0.75; // Slower and clearer for letter recognition
+            speechSettings.rate = 0.75; // Slower but still natural for letters
           }
           break;
           
         case 'slow':
-          // Very clear and deliberate for learning
+          // Deliberate but natural pace for learning
           speechSettings.rate = 0.6;
-          speechSettings.pitch = 1.0;
-          speechSettings.volume = 1.0;
+          speechSettings.pitch = 0.95;
+          speechSettings.volume = 0.85;
           if (!text.includes(' ')) {
             // For single words, add syllable breaks
             processedText = syllableBreakdown(text);
@@ -174,26 +153,26 @@ export function useSpeech() {
           break;
           
         case 'repeat':
-          // Clear first pronunciation for repetition
+          // Natural first pronunciation, then clearer repetition
           speechSettings.rate = 0.85;
-          speechSettings.pitch = 1.0;
-          speechSettings.volume = 1.0;
+          speechSettings.pitch = 0.95;
+          speechSettings.volume = 0.85;
           break;
           
         case 'spell':
-          // Clear letter-by-letter pronunciation
+          // Spell out each letter with natural rhythm
           speechSettings.rate = 0.7;
-          speechSettings.pitch = 1.0;
-          speechSettings.volume = 1.0;
+          speechSettings.pitch = 0.95;
+          speechSettings.volume = 0.85;
           if (!text.includes(' ')) {
             // Convert each letter to its full phonetic name for clarity
             const letterNames: { [key: string]: string } = {
-              'A': 'Letter A', 'B': 'Letter B', 'C': 'Letter C', 'D': 'Letter D', 'E': 'Letter E',
-              'F': 'Letter F', 'G': 'Letter G', 'H': 'Letter H', 'I': 'Letter I', 'J': 'Letter J',
-              'K': 'Letter K', 'L': 'Letter L', 'M': 'Letter M', 'N': 'Letter N', 'O': 'Letter O',
-              'P': 'Letter P', 'Q': 'Letter Q', 'R': 'Letter R', 'S': 'Letter S', 'T': 'Letter T',
-              'U': 'Letter U', 'V': 'Letter V', 'W': 'Letter W', 'X': 'Letter X', 
-              'Y': 'Letter Y', 'Z': 'Letter Z'
+              'A': 'ay', 'B': 'bee', 'C': 'see', 'D': 'dee', 'E': 'ee',
+              'F': 'eff', 'G': 'jee', 'H': 'aitch', 'I': 'eye', 'J': 'jay',
+              'K': 'kay', 'L': 'ell', 'M': 'emm', 'N': 'enn', 'O': 'oh',
+              'P': 'pee', 'Q': 'cue', 'R': 'arr', 'S': 'ess', 'T': 'tee',
+              'U': 'you', 'V': 'vee', 'W': 'double-you', 'X': 'ex', 
+              'Y': 'why', 'Z': 'zee'
             };
             
             const letters = text.split('').map(letter => {
@@ -252,9 +231,9 @@ export function useSpeech() {
             const slowText = !text.includes(' ') ? syllableBreakdown(text) : text.replace(/\s+/g, ' ... ');
             const repeatUtterance = new SpeechSynthesisUtterance(slowText);
             if (preferredVoice) repeatUtterance.voice = preferredVoice;
-            repeatUtterance.rate = 0.65;
-            repeatUtterance.pitch = 1.0;
-            repeatUtterance.volume = 1.0;
+            repeatUtterance.rate = 0.6;
+            repeatUtterance.pitch = 0.95;
+            repeatUtterance.volume = 0.85;
             repeatUtterance.lang = 'en-US';
             speechSynthesis.speak(repeatUtterance);
           }, 800);

@@ -22,14 +22,6 @@ export default function Game() {
 
   const currentContent = getCurrentContent();
   const options = getOptions();
-  
-  // Debug logging for letter games
-  useEffect(() => {
-    if (planet?.gameType === 'letters' && currentContent) {
-      console.log('Current letter displayed:', currentContent);
-      console.log('Letter options:', options);
-    }
-  }, [currentContent, options, planet?.gameType]);
 
   // Auto-speak content when it changes
   useEffect(() => {
