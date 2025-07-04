@@ -105,6 +105,7 @@ export function useSpeech() {
   }, []);
 
   const speak = useCallback((text: string, mode: 'normal' | 'slow' | 'repeat' | 'spell' = 'normal') => {
+    console.log('SPEECH DEBUG - Input text:', text, 'Mode:', mode);
     if ('speechSynthesis' in window) {
       // Cancel any ongoing speech
       speechSynthesis.cancel();
@@ -124,16 +125,18 @@ export function useSpeech() {
           speechSettings.volume = 0.85;
           // For single letters, use letter names
           if (text.length === 1 && /^[A-Za-z]$/.test(text)) {
+            console.log('Processing letter:', text);
             const letterNames: { [key: string]: string } = {
-              'A': 'ay', 'B': 'bee', 'C': 'see', 'D': 'dee', 'E': 'ee',
-              'F': 'eff', 'G': 'jee', 'H': 'aitch', 'I': 'eye', 'J': 'jay',
-              'K': 'kay', 'L': 'ell', 'M': 'emm', 'N': 'enn', 'O': 'oh',
-              'P': 'pee', 'Q': 'cue', 'R': 'arr', 'S': 'ess', 'T': 'tee',
-              'U': 'you', 'V': 'vee', 'W': 'double-you', 'X': 'ex', 
-              'Y': 'why', 'Z': 'zee'
+              'A': 'Letter A', 'B': 'Letter B', 'C': 'Letter C', 'D': 'Letter D', 'E': 'Letter E',
+              'F': 'Letter F', 'G': 'Letter G', 'H': 'Letter H', 'I': 'Letter I', 'J': 'Letter J',
+              'K': 'Letter K', 'L': 'Letter L', 'M': 'Letter M', 'N': 'Letter N', 'O': 'Letter O',
+              'P': 'Letter P', 'Q': 'Letter Q', 'R': 'Letter R', 'S': 'Letter S', 'T': 'Letter T',
+              'U': 'Letter U', 'V': 'Letter V', 'W': 'Letter W', 'X': 'Letter X', 
+              'Y': 'Letter Y', 'Z': 'Letter Z'
             };
             const upperLetter = text.toUpperCase();
             processedText = letterNames[upperLetter] || text;
+            console.log('Letter will be spoken as:', processedText);
             speechSettings.rate = 0.75; // Slower but still natural for letters
           }
           break;
@@ -167,12 +170,12 @@ export function useSpeech() {
           if (!text.includes(' ')) {
             // Convert each letter to its full phonetic name for clarity
             const letterNames: { [key: string]: string } = {
-              'A': 'ay', 'B': 'bee', 'C': 'see', 'D': 'dee', 'E': 'ee',
-              'F': 'eff', 'G': 'jee', 'H': 'aitch', 'I': 'eye', 'J': 'jay',
-              'K': 'kay', 'L': 'ell', 'M': 'emm', 'N': 'enn', 'O': 'oh',
-              'P': 'pee', 'Q': 'cue', 'R': 'arr', 'S': 'ess', 'T': 'tee',
-              'U': 'you', 'V': 'vee', 'W': 'double-you', 'X': 'ex', 
-              'Y': 'why', 'Z': 'zee'
+              'A': 'Letter A', 'B': 'Letter B', 'C': 'Letter C', 'D': 'Letter D', 'E': 'Letter E',
+              'F': 'Letter F', 'G': 'Letter G', 'H': 'Letter H', 'I': 'Letter I', 'J': 'Letter J',
+              'K': 'Letter K', 'L': 'Letter L', 'M': 'Letter M', 'N': 'Letter N', 'O': 'Letter O',
+              'P': 'Letter P', 'Q': 'Letter Q', 'R': 'Letter R', 'S': 'Letter S', 'T': 'Letter T',
+              'U': 'Letter U', 'V': 'Letter V', 'W': 'Letter W', 'X': 'Letter X', 
+              'Y': 'Letter Y', 'Z': 'Letter Z'
             };
             
             const letters = text.split('').map(letter => {
